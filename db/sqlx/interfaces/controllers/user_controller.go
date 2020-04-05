@@ -52,3 +52,18 @@ func (controller *UserController) Show(id string) (*domain.User, error) {
 	}
 	return user, nil
 }
+
+func (controller *UserController) Update(id string, firstName string, lastName string) (*domain.User, error) {
+	identifier, err := strconv.Atoi(id)
+	user, err := database.FindByID(controller.db, identifier)
+	if err != nil {
+		return nil, err
+	}
+	user.FirstName = firstName
+	user.LastName = lastName
+	_, err2 := database.Update(controller.db, *user)
+	if err2 != nil {
+		return nil, err2
+	}
+	return user, nil
+}

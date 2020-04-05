@@ -59,3 +59,20 @@ func FindAll(db *sqlx.DB) (domain.Users, error) {
 	}
 	return users, nil
 }
+
+func Update(db *sqlx.DB, u domain.User) (int, error) {
+	stmt, err := db.Prepare("UPDATE users SET first_name=?, last_name=?")
+	if err != nil {
+		return 0, err
+	}
+	defer stmt.Close()
+	res, err := stmt.Exec(u.FirstName, u.LastName)
+	if err != nil {
+		return 0, err
+	}
+	lastInsertID, err := res.LastInsertId()
+	if err != nil {
+		return 0, err
+	}
+	return int(lastInsertID), nil
+}

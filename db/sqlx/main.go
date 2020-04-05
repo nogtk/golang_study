@@ -60,6 +60,24 @@ func main() {
 		}
 		fmt.Printf("ID: %v, FirstName: %v, LastName: %v\n", user.ID, user.FirstName, user.LastName)
 		return
+	case "update":
+		if *id == "" {
+			log.Fatal("You need an user.id.")
+		}
+		if *firstName == "" {
+			log.Fatal("You need a first name.")
+		}
+		if *lastName == "" {
+			log.Fatal("You need a last name.")
+		}
+		user, err := userController.Update(*id, *firstName, *lastName)
+		if err != nil {
+			fmt.Print("Update failed.\n")
+			log.Fatal(err)
+		}
+		fmt.Print("Update succeeded!\n")
+		fmt.Printf("ID: %v, FirstName: %v, LastName: %v\n", user.ID, user.FirstName, user.LastName)
+		return
 	default:
 		log.Fatal("Unrecognized option.")
 	}
